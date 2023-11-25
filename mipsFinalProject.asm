@@ -20,8 +20,6 @@
 
 .macro printInts 
 	#load current element into $t0
-	#addi $t9, $t9, 4
-	#mul $t8, $t9, %int 
 	lw $t0, 0($s0)
 	#print out the current element
 	li $v0, 1
@@ -53,6 +51,7 @@ O: .asciiz "O"
 X: .asciiz "X"
 
 prompt: .asciiz "Player 1, please enter the slot you would like to take: "
+
 .text
 main:
 	la $s0, array
@@ -75,16 +74,7 @@ loop:
 	printStr(spacer)
 	
 	beq $t1, 5, conditional
-	#print out spacer
 	j loop
-	#prints prompt and reads int for slot to be marked
-	#li $v0, 4
-	#la $a0, prompt
-	#syscall
-	#li $v0, 5
-	#syscall
-	#move $t0, $v0
-	#beq $t0, 1, printO
 	
 conditional:
 	addi $s0, $s0, 4
@@ -120,8 +110,5 @@ printO:
 	j exit
 	
 exit:
-	
-	#macro that changes marks slot based on number
-
 	li $v0, 10
 	syscall
