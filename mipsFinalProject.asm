@@ -152,7 +152,7 @@ askForMove1:
 	la $a0, player1Move
 	syscall
 	
-	li $v0, 5		#save integer imput to S0
+	li $v0, 5		#save integer imput to $s0
 	syscall
 	move $s0, $v0
 
@@ -173,19 +173,16 @@ askForMove2:
 	la $a0, player2Move
 	syscall
 	
-	li $v0, 5		#save integer input to S0
+	li $v0, 5		#save integer input to $s0
 	syscall
 	move $s0, $v0
-
-	#//branch
-	#branch to replace number with 'O', then branch back to askForMove1
-
 
 	#branch if less than 1 or less than 9 to re-prompt for correct user input from Player 2
 	blt $s0, 1, invalidSlotPrompt2
 	bgt $s0, 9, invalidSlotPrompt2
 
-
+	#//branch
+	#branch to replace number with 'O', then branch back to askForMove1
 
 invalidSlotPrompt1:
 
