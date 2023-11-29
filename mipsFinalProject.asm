@@ -40,6 +40,13 @@
 
 
 .data
+
+rules1: .asciiz "This is Tic-Tac-Toe! There will be a board of numbers in each of the 9 slots.\n"
+rules2: .asciiz "Each player will enter the integer of the slot they would like to choose.\n"
+rules3: .asciiz "Player 1 will be assigned 'X', and Player 2 will be assigned 'O'\n"
+rules4: .asciiz "Once the player picks a slot, that slot will be replaced with their respective 'X' or 'O'."
+
+
 line: .asciiz "\n-----------------"
 newline: .asciiz "\n"
 spacer: .asciiz "  |  "
@@ -50,7 +57,8 @@ array: .word 1, 2, 3, 4, 5, 6, 7, 8, 9
 O: .asciiz "O"
 X: .asciiz "X"
 
-prompt: .asciiz "Player 1, please enter the slot you would like to take: "
+player1Move: .asciiz "Player 1, please enter the slot you would like to take: "
+player2Move: .asciiz "Player 2, please enter the slot you would like to take: "
 
 .text
 main:
@@ -108,7 +116,58 @@ printO:
 	la $a0, ($t1)
 	syscall
 	j exit
+
+
+intro:
+	li $v0, 4		#displays rules
+	la $a0, rules1
+	syscall
+	li $v0, 4		#displays rules
+	la $a0, rules2
+	syscall
+	li $v0, 4		#displays rules
+	la $a0, rules3
+	syscall
+	li $v0, 4		#displays rules
+	la $a0, rules4
+	syscall
+
+
+	jal askForMoves #jumps to ask players thier moves
+
+askForMoves:
+	#begin game, ask player 1 for slot they'd like to replace X with and save that number
+	printBeg #assuming this prints only board with only numbers
+
+	li $v0, 4		#ask player 1 for their move
+	la $a0, player1Move
+	syscall
 	
+	li $v0, 5		#save integer imput to S0
+	syscall
+	move $s0, $v0
+
+	#branch to board
+
+
+
+
+	#branch to board to replace slot with X, then reprint board with X in board
+	li $v0, 4		#ask player 2 for their move
+	la $a0, player2Move
+	syscall
+	
+	li $v0, 5		#save integer input to S0
+	syscall
+	move $s0, $v0
+
+
+	#ask player 2 for slot number to replace with O
+
+
+	#branch to board to replace slot with O
+
+	#loop to askForMove to keep asking for Player 1 and 2 moves
 exit:
 	li $v0, 10
 	syscall
