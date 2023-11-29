@@ -5,7 +5,7 @@
 # different winner combos = 147, 258, 369, 123, 456, 789, 159, 357 (either in order or reverse also works)?
 # macros = prints setup, updates setup, identify the winner, (menu?)
 
-
+#Testing Github commits
 .macro printStr(%string)
 	li $v0, 4
 	la $a0, %string
