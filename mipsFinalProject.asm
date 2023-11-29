@@ -57,10 +57,16 @@ array: .word 1, 2, 3, 4, 5, 6, 7, 8, 9
 O: .asciiz "O"
 X: .asciiz "X"
 
-player1Move: .asciiz "Player 1, please enter the slot you would like to take: "
-player2Move: .asciiz "Player 2, please enter the slot you would like to take: "
+player1Move: .asciiz "\nPlayer 1, please enter the slot you would like to take: "
+player2Move: .asciiz "\nPlayer 2, please enter the slot you would like to take: "
+
+
+invalidSlotNumber: .asciiz "\nInvalid slot number, try again please."
+
 
 .text
+jal askForMoves
+
 main:
 	la $s0, array
 	#loop counter
@@ -119,25 +125,28 @@ printO:
 
 
 intro:
-	li $v0, 4		#displays rules
+	li $v0, 4		
 	la $a0, rules1
 	syscall
-	li $v0, 4		#displays rules
+	li $v0, 4		
 	la $a0, rules2
 	syscall
-	li $v0, 4		#displays rules
+	li $v0, 4		
 	la $a0, rules3
 	syscall
-	li $v0, 4		#displays rules
+	li $v0, 4		
 	la $a0, rules4
 	syscall
 
 
-	jal askForMoves #jumps to ask players thier moves
+	jal askForMove1 #jumps to ask players thier moves
 
-askForMoves:
-	#begin game, ask player 1 for slot they'd like to replace X with and save that number
-	printBeg #assuming this prints only board with only numbers
+askForMove1:
+
+	#///FIX/// jumping to printBeg doesn't work? initial board build?
+	#begin game
+	#jal printBeg #assuming this prints only board with only numbers
+	#//trying to print board with what has already been played
 
 	li $v0, 4		#ask player 1 for their move
 	la $a0, player1Move
@@ -147,12 +156,19 @@ askForMoves:
 	syscall
 	move $s0, $v0
 
-	#branch to board
+	#branch if less than 1 or less than 9 to re-prompt for correct user input from Player 1
+	blt $s0, 1, invalidSlotPrompt1
+	bgt $s0, 9, invalidSlotPrompt1
 
 
+	#//branch
+	#branch to replace number with 'X', then branch back to askForMove2
 
 
-	#branch to board to replace slot with X, then reprint board with X in board
+askForMove2:
+
+	#//print board with all previous moves
+	
 	li $v0, 4		#ask player 2 for their move
 	la $a0, player2Move
 	syscall
@@ -161,10 +177,45 @@ askForMoves:
 	syscall
 	move $s0, $v0
 
+	#//branch
+	#branch to replace number with 'O', then branch back to askForMove1
 
-	#branch to board to replace slot with O
 
-	#loop to askForMove to keep asking for Player 1 and 2 moves
+	#branch if less than 1 or less than 9 to re-prompt for correct user input from Player 2
+	blt $s0, 1, invalidSlotPrompt2
+	bgt $s0, 9, invalidSlotPrompt2
+
+
+
+invalidSlotPrompt1:
+
+	#re-prompts for correct input
+	li $v0, 4		
+	la $a0, invalidSlotNumber
+	syscall
+
+	jal askForMove1
+
+
+invalidSlotPrompt2:
+
+	#re-prompts for correct input
+	li $v0, 4		
+	la $a0, invalidSlotNumber
+	syscall
+
+	jal askForMove2
+
+
+
+
+
+
+
+
+
+
+
 exit:
 	li $v0, 10
 	syscall
