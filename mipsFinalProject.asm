@@ -162,9 +162,6 @@ askForMoves:
 	move $s0, $v0
 
 
-	#ask player 2 for slot number to replace with O
-
-
 	#branch to board to replace slot with O
 
 	#loop to askForMove to keep asking for Player 1 and 2 moves
