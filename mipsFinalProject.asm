@@ -81,7 +81,7 @@ loop:
 	#increment counter by 1
 	addi $t1, $t1, 1
 	#implement conditional to break out of the loop
-	#once the counter reaches 5, we should exit
+	#once the counter reaches 5, we should exit (still testing, get it right = will use to change slot to user input)
 	beq $t1, 4, printEnd
 	beq $t1, 7, printEnd
 	beq $t1, 10, exit
@@ -146,6 +146,7 @@ askForMove1:
 	#///FIX/// jumping to printBeg doesn't work? initial board build?
 	#begin game
 	#jal printBeg #assuming this prints only board with only numbers
+	# maybe try j printBeg?
 	#//trying to print board with what has already been played
 
 	li $v0, 4		#ask player 1 for their move
