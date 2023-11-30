@@ -8,10 +8,10 @@
 
 - Program:
 - 1.) Focus on making the game playable for one person
-          - Make sure the board is setup correctly
+          - Make sure the board is setup correctly (going with 3 strings/arrays? instead of 1 array)
           - Read and store input from player
           - Update the board according to the input
-          - After each input, check for win conditions (each row, column or diagonal)
+          - After each input, check for win conditions (each row, column or diagonal) (using 2 arrays, going through each array for win condition)
           - Print out win and exit program
 - 2.) Add another player (pretty similar but a bit more difficult)
           - Read and store input from 2 players
