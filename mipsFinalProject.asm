@@ -41,7 +41,7 @@
 
 .data
 
-rules1: .asciiz "This is Tic-Tac-Toe! There will be a board of numbers in each of the 9 slots.\n"
+rules1: .asciiz "\nThis is Tic-Tac-Toe! There will be a board of numbers in each of the 9 slots.\n"
 rules2: .asciiz "Each player will enter the integer of the slot they would like to choose.\n"
 rules3: .asciiz "Player 1 will be assigned 'X', and Player 2 will be assigned 'O'\n"
 rules4: .asciiz "Once the player picks a slot, that slot will be replaced with their respective 'X' or 'O'."
@@ -65,7 +65,7 @@ invalidSlotNumber: .asciiz "\nInvalid slot number, try again please."
 
 
 .text
-jal askForMoves
+#jal askForMoves (needed?)
 
 main:
 	la $s0, array
@@ -84,7 +84,7 @@ loop:
 	#once the counter reaches 5, we should exit (still testing, get it right = will use to change slot to user input)
 	beq $t1, 4, printEnd
 	beq $t1, 7, printEnd
-	beq $t1, 10, exit
+	beq $t1, 10, intro
 	printStr(spacer)
 	
 	beq $t1, 5, conditional
