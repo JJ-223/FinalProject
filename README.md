@@ -30,4 +30,3 @@
 - Test cases / errors
           - Slot is already occupied (whether by their own or the other player)
           - Input for slot is out of bounds (not 1-9) (whether it be ints or chars or strings)
-          - 
