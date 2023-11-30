@@ -12,6 +12,12 @@
 	syscall
 .end_macro
 
+.macro getInt
+    li $v0, 5		#save integer imput to $s0
+	syscall
+	move $s0, $v0
+.end_macro
+
 .macro printInt(%int)
 	li $v0, 1
 	la $a0, %int
@@ -143,15 +149,12 @@ intro:
 
 askForMove1:
 
-	jal main	#print board before asking user move
+	jal main				#print board before asking user move
 
-	printStr(player1Move)
-	
-	li $v0, 5		#save integer imput to $s0
-	syscall
-	move $s0, $v0
+	printStr(player1Move)	#prompt to get move from Player 1
+	getInt					#integer saved to $s0
 
-	#branch if less than 1 or less than 9 to re-prompt for correct user input from Player 1
+	#branch if less than 1 or more than 9 to re-prompt for correct user input from Player 1
 	blt $s0, 1, invalidSlotPrompt1
 	bgt $s0, 9, invalidSlotPrompt1
 
@@ -162,13 +165,10 @@ askForMove1:
 
 askForMove2:
 
-	jal main	#//print board with all previous moves
+	jal main				#//print board with all previous moves
 	
-	printStr(player2Move)
-	
-	li $v0, 5		#save integer input to $s0
-	syscall
-	move $s0, $v0
+	printStr(player2Move)	#prompt to get move from Player 2
+	getInt					#save integer input to $s0
 
 	#branch if less than 1 or more than 9 to re-prompt for correct user input from Player 2
 	blt $s0, 1, invalidSlotPrompt2
