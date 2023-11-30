@@ -143,15 +143,9 @@ intro:
 
 askForMove1:
 
-	#///FIX/// jumping to printBeg doesn't work? initial board build?
-	#begin game
-	#jal printBeg #assuming this prints only board with only numbers
-	# maybe try j printBeg?
-	#//trying to print board with what has already been played
+	jal main	#print board before asking user move
 
-	li $v0, 4		#ask player 1 for their move
-	la $a0, player1Move
-	syscall
+	printStr(player1Move)
 	
 	li $v0, 5		#save integer imput to $s0
 	syscall
@@ -168,17 +162,15 @@ askForMove1:
 
 askForMove2:
 
-	#//print board with all previous moves
+	jal main	#//print board with all previous moves
 	
-	li $v0, 4		#ask player 2 for their move
-	la $a0, player2Move
-	syscall
+	printStr(player2Move)
 	
 	li $v0, 5		#save integer input to $s0
 	syscall
 	move $s0, $v0
 
-	#branch if less than 1 or less than 9 to re-prompt for correct user input from Player 2
+	#branch if less than 1 or more than 9 to re-prompt for correct user input from Player 2
 	blt $s0, 1, invalidSlotPrompt2
 	bgt $s0, 9, invalidSlotPrompt2
 
@@ -188,9 +180,7 @@ askForMove2:
 invalidSlotPrompt1:
 
 	#re-prompts for correct input
-	li $v0, 4		
-	la $a0, invalidSlotNumber
-	syscall
+	printStr(invalidSlotNumber)
 
 	jal askForMove1
 
@@ -198,9 +188,7 @@ invalidSlotPrompt1:
 invalidSlotPrompt2:
 
 	#re-prompts for correct input
-	li $v0, 4		
-	la $a0, invalidSlotNumber
-	syscall
+	printStr(invalidSlotNumber)
 
 	jal askForMove2
 
