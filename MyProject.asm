@@ -1,4 +1,5 @@
 
+
 .macro printStr(%string)
 	li $v0, 4
 	la $a0, %string
@@ -7,6 +8,7 @@
 
 .macro printInts
 	beq $t0, 10, print0
+	beq $t0, 11, printX
 	
 	li $v0, 1
 	move $a0, $t0
@@ -116,13 +118,17 @@ askForMove1:
 	
 	li $v0, 5		#save integer imput to $s0
 	syscall
-	move $s7, $v0
+	#move $s7, $v0
+	move $s4, $v0
 	
     	
 	li $t2, 12
 	move $s6, $t2
 	
-	j prepareArray
+	jal XchangeArray
+	
+	#j prepareArray
+	
 	#branch if less than 1 or less than 9 to re-prompt for correct user input from Player 1
 	#blt $s0, 1, invalidSlotPrompt1
 	#bgt $s0, 9, invalidSlotPrompt1
@@ -189,6 +195,28 @@ OchangeArray:
 
 #new
 
+XchangeArray:
+#new
+	la $s0, array
+	
+	#load current element into $t0
+	lw $t0, ($s0)
+	la $a2,($s0)
+	subi $s4, $s4, 1
+	mul $s5, $s4, 4
+	add $s0, $s0, $s5
+	
+	li $t5, 11
+	
+	sw $t5, ($s0)
+	#incremeent base adress
+	#addi $s1, $s1, 4
+	
+	j prepareArray
+
+
+#new
+
 
 checkTurn:
 
@@ -217,6 +245,30 @@ print0:
 	
 	j printTable
 	
+#new
+printX:
+	
+	
+	li $v0, 4
+	la $a0, X
+	syscall
+	
+	#increment base address by 4
+	#addi $s0, $s0, 4
+	#increment counter by 1
+	#addi $t1, $t1, 1
+	
+	beq $t1, 9,checkTurn
+	
+	
+	beq $t1, 3, printEnd
+	beq $t1, 6, printEnd
+	
+	printStr(spacer)
+	
+	j printTable
+#new
+
 printBeg:
 	printStr(newline)
 	printStr(endspacer)
