@@ -1,5 +1,4 @@
 
-
 .macro printStr(%string)
 	li $v0, 4
 	la $a0, %string
@@ -7,10 +6,16 @@
 .end_macro
 
 .macro printInts
+	beq $t0, 10, print0
+	
 	li $v0, 1
 	move $a0, $t0
 	syscall
+	
+	
+	
 .end_macro
+
 
 
 .data
@@ -30,12 +35,22 @@ array: .word 1, 2, 3, 4, 5, 6, 7, 8, 9
 
 O: .asciiz "O"
 X: .asciiz "X"
+allInputs: .word 0, 0, 0, 0, 0, 0, 0, 0, 0
+Oinputs: .word 0, 0, 0, 0, 0
+Xinputs: .word 0, 0, 0, 0, 0
 
 player1Move: .asciiz "\nPlayer 1, please enter the slot you would like to take: "
 player2Move: .asciiz "\nPlayer 2, please enter the slot you would like to take: "
 
 .text
 main:	
+	
+	move $s3, $sp
+	addi $sp, $sp, 76
+	la $a0, 20($sp) # Oinput
+	#move $s5, 40($sp) # 
+	#move $s6, 76($sp)
+	
 	printStr(rules1)
 	printStr(rules2)
 	printStr(rules3)
@@ -55,9 +70,12 @@ printTable:
 	#increment counter by 1
 	addi $t1, $t1, 1
 	
+	#new
 	
 	
-	beq $t1, $s7, print0
+	
+	#new
+	#beq $t1, 10, print0
 	
 	printInts
 	
@@ -99,7 +117,8 @@ askForMove1:
 	li $v0, 5		#save integer imput to $s0
 	syscall
 	move $s7, $v0
-
+	
+    	
 	li $t2, 12
 	move $s6, $t2
 	
@@ -120,15 +139,26 @@ askForMove2:
 	la $a0, player2Move
 	syscall
 	
-	li $v0, 5		#save integer input to $s0
-	syscall
-	move $s7, $v0
+	#li $v0, 5		#save integer input to $s0
+	#syscall
+	#move $s7, $v0
 	
+	li $v0, 5
+	syscall
+	move $s4, $v0
+	
+	#jal OchangeArray
+	
+    	#sw $v0, Oinputs($s1)
+	#increment base addresss by 4
+    	
 	
 	li $t2, 11
 	move $s6, $t2
 	
-	j prepareArray
+	jal OchangeArray
+	
+	#j prepareArray
 
 	#branch if less than 1 or less than 9 to re-prompt for correct user input from Player 2
 	#blt $s0, 1, invalidSlotPrompt2
@@ -136,6 +166,29 @@ askForMove2:
 
 	#//branch
 	#branch to replace number with 'O', then branch back to askForMove1
+
+OchangeArray:
+#new
+	la $s0, array
+	
+	#load current element into $t0
+	lw $t0, ($s0)
+	la $a2,($s0)
+	subi $s4, $s4, 1
+	mul $s5, $s4, 4
+	add $s0, $s0, $s5
+	
+	li $t5, 10
+	
+	sw $t5, ($s0)
+	#incremeent base adress
+	#addi $s1, $s1, 4
+	
+	j prepareArray
+
+
+#new
+
 
 checkTurn:
 
@@ -182,4 +235,5 @@ printEnd:
 exit:
 	li $v0, 10
 	syscall
+	
 	
