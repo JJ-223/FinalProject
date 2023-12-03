@@ -192,6 +192,37 @@ invalidSlotPrompt2:
 
 	jal askForMove2
 
+displayMenu:
+        # Display menu options
+        li $v0, 4
+        la $a0, menuOptions
+        syscall
+
+        # Read user choice
+        li $v0, 5
+        syscall
+        move $s0, $v0  # Store user choice in $s0 for later use
+
+        # Conditional jump based on choice
+        beq $s0, 1, startGame  # If choice is 1, start game
+        beq $s0, 2, exit       # If choice is 2, exit program
+
+        # Add a jump back to menu in case of invalid choice
+        j displayMenu
+
+startGame:
+       # Reset the game board to initial state (1-9)
+       li $t0, 1          # Counter for initializing array values
+       la $t1, array      # Pointer to the start of the array
+
+reset_board_loop:
+       sw $t0, 0($t1)     # Store counter value in the array
+       addi $t0, $t0, 1   # Increment counter
+       addi $t1, $t1, 4   # Move to the next array slot
+       li $t2, 9
+       blt $t0, $t2, reset_board_loop # Loop until all slots are initialized
+
+
 askForReplay: # Display replay options
         li $v0, 4
         la $a0, replayOptions
