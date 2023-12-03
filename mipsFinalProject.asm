@@ -192,11 +192,22 @@ invalidSlotPrompt2:
 
 	jal askForMove2
 
+askForReplay: # Display replay options
+        li $v0, 4
+        la $a0, replayOptions
+        syscall
 
+        # Read user choice
+        li $v0, 5
+        syscall
+        move $s1, $v0  # Store choice in $s1
 
+        # Conditional logic to either restart game or exit
+        beq $s1, 1, main    # If choice is 1, restart game
+        beq $s1, 2, exit    # If choice is 2, exit program
 
-
-
+        # In case of invalid choice, ask again
+        j askForReplay
 
 
 
