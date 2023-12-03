@@ -194,12 +194,12 @@ invalidSlotPrompt2:
 
 displayMenu:
         # Display menu options
-        li $v0, 4
-        la $a0, menuOptions
+        li $v0, 4               # Load the syscall code for printing a string
+        la $a0, menuOptions     # Load the address of the menuOptions string
         syscall
 
         # Read user choice
-        li $v0, 5
+        li $v0, 5               # Load the syscall code for reading an integer
         syscall
         move $s0, $v0  # Store user choice in $s0 for later use
 
@@ -222,6 +222,8 @@ reset_board_loop:
        li $t2, 9
        blt $t0, $t2, reset_board_loop # Loop until all slots are initialized
 
+       # Jump to the main game loop or handle player input here
+       j main
 
 askForReplay: # Display replay options
         li $v0, 4
@@ -239,7 +241,6 @@ askForReplay: # Display replay options
 
         # In case of invalid choice, ask again
         j askForReplay
-
 
 
 
