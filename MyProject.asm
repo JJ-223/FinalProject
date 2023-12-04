@@ -1,5 +1,6 @@
 
 
+
 .macro printStr(%string)
 	li $v0, 4
 	la $a0, %string
@@ -8,7 +9,7 @@
 
 .macro printInts
 	# if element in array is equal to 10 or 11, it jumos to print0 or printX respectively
-	beq $t0, 10, print0
+	beq $t0, 12, print0
 	beq $t0, 11, printX
 	
 	# print out array element
@@ -46,8 +47,17 @@ Xinputs: .word 0, 0, 0, 0, 0
 player1Move: .asciiz "\nPlayer 1, please enter the slot you would like to take: "
 player2Move: .asciiz "\nPlayer 2, please enter the slot you would like to take: "
 
+Player1WinText: "Player 1 has WON!!!"
+Player2WinText: "Player 2 has WON!!!"
+
 .text
 main:	
+	
+	#move $s3, $sp
+	#addi $sp, $sp, 76
+	#la $a0, 20($sp) # Oinput
+	#move $s5, 40($sp) # 
+	#move $s6, 76($sp)
 	
 	# print out rules
 	printStr(rules1)
@@ -120,7 +130,7 @@ askForMove1: # prompts user, stores user input, and indicates that its player2s 
 	jal XchangeArray
 	
 
-askForMove2:
+askForMove2: # prompts user, stores user input, and indicates that its player1s turn next
 
 	
 	#ask player 2 for their move
@@ -164,13 +174,15 @@ OchangeArray: # change the value in the array to a 10, which symbolizes a 'O'
 	# check if $t3, equals 10 and 11 jump to 'askForMove2'
 	# the 10 and 11 means that there already is a O or X in that space
 	beq $t3, 11, askForMove2
-	beq $t3, 10, askForMove2
+	beq $t3, 12, askForMove2
 	
 	# load 10,(O), into $t5
 	# then store in array
-	li $t5, 10
+	li $t5, 12 #10
 	sw $t5, ($s0)
 	
+	# check if player has won
+	 j checkWin
 	
 	j prepareArray
 
@@ -200,7 +212,7 @@ XchangeArray: # change the value in the array to a 11, which symbolizes a 'X'
 	# check if $t3, equals 10 and 11 jump to 'askForMove2'
 	# the 10 and 11 means that there already is a O or X in that space
 	beq $t3, 11, askForMove1
-	beq $t3, 10, askForMove1
+	beq $t3, 12, askForMove1
 	
 
 	# load 11,(X), into $t5
@@ -208,6 +220,8 @@ XchangeArray: # change the value in the array to a 11, which symbolizes a 'X'
 	li $t5, 11
 	sw $t5, ($s0)
 	
+	# check if player has won
+	j checkWin
 	
 	j prepareArray
 
@@ -221,7 +235,7 @@ checkTurn: # check which players turn it is
 	# if $t2, equals 12, jump to askForMove2
 	beq $t2, 12, askForMove2
 
-print0:
+print0: # print out O
 	
 	# print out O
 	li $v0, 4
@@ -242,7 +256,7 @@ print0:
 	j printTable
 	
 
-printX:
+printX: # print out X
 	
 	# print out X
 	li $v0, 4
@@ -261,8 +275,204 @@ printX:
 	printStr(spacer)
 	
 	j printTable
+	
+checkWin: # check if player has won
+	j winRow1
+	
+	
+winRow1:  # check if player has won, in row 1
+
+	# load address of array in $s0
+	la $s0, array
+	 
+	# load elements in row 1, into registers
+	lw $s1, ($s0)
+	lw $s2, 4($s0)
+	lw $s3, 8($s0)
+	 
+	# check that all three elements qre equal
+	and $t6, $s1, $s2
+	and $t7, $t6, $s3
+	
+	# if $t7 equals 11, call Xwin
+	beq $t7, 11, Xwin
+	
+	# if $t7 equals 11, call Owin
+	beq $t7, 12, Owin
+	
+	j winRow2
+
+winRow2:# check if player has won, in row 2
+
+	# load address of array in $s0
+	la $s0, array
+	
+	# load elements in row 2, into registers
+	lw $s1, 12($s0)
+	lw $s2, 16($s0)
+	lw $s3, 20($s0)
+	
+	# check that all three elements qre equal
+	and $t6, $s1, $s2
+	and $t7, $t6, $s3
+	
+	# if $t7 equals 11, call Xwin
+	beq $t7, 11, Xwin
+	
+	# if $t7 equals 11, call Owin
+	beq $t7, 12, Owin
+	
+	j winRow3
+	
+winRow3:# check if player has won, in row 3
+
+	# load address of array in $s0
+	la $s0, array
+	
+	# load elements in row 3, into registers
+	lw $s1, 24($s0)
+	lw $s2, 28($s0)
+	lw $s3, 32($s0)
+	
+	# check that all three elements qre equal
+	and $t6, $s1, $s2
+	and $t7, $t6, $s3
+	
+	# if $t7 equals 11, call Xwin
+	beq $t7, 11, Xwin
+	
+	# if $t7 equals 11, call Owin
+	beq $t7, 12, Owin
+	
+	j winCol1
+	
+winCol1: # check if player has won, in column 1
+
+	# load address of array in $s0
+	la $s0, array
+	 
+	# load elements in column 1, into registers
+	lw $s1, ($s0)
+	lw $s2, 12($s0)
+	lw $s3, 24($s0)
+	 
+	# check that all three elements qre equal
+	and $t6, $s1, $s2
+	and $t7, $t6, $s3
+	
+	# if $t7 equals 11, call Xwin
+	beq $t7, 11, Xwin
+	
+	# if $t7 equals 11, call Owin
+	beq $t7, 12, Owin
+	
+	j winCol2
+	
+	
+winCol2:# check if player has won, in column 2
+
+	# load address of array in $s0
+	la $s0, array
+	
+	# load elements in column 2, into registers
+	lw $s1, 4($s0)
+	lw $s2, 16($s0)
+	lw $s3, 28($s0)
+	 
+	# check that all three elements qre equal
+	and $t6, $s1, $s2
+	and $t7, $t6, $s3
+	
+	# if $t7 equals 11, call Xwin
+	beq $t7, 11, Xwin
+	
+	# if $t7 equals 11, call Owin
+	beq $t7, 12, Owin
+	
+	j winCol3
+	
+	
+winCol3:# check if player has won, in column 3
+
+	# load address of array in $s0
+	la $s0, array
+	
+	# load elements in column 3, into registers
+	lw $s1, 8($s0)
+	lw $s2, 20($s0)
+	lw $s3, 32($s0)
+	 
+	# check that all three elements qre equal
+	and $t6, $s1, $s2
+	and $t7, $t6, $s3
+	
+	# if $t7 equals 11, call Xwin
+	beq $t7, 11, Xwin
+	
+	# if $t7 equals 11, call Owin
+	beq $t7, 12, Owin
+	
+	j winDiag1
+
+	
+winDiag1: # check if player has won, in diagonal 1
 
 
+	# load address of array in $s0
+	la $s0, array
+	
+	# load elements in diagonal 1, into registers
+	lw $s1, ($s0)
+	lw $s2, 16($s0)
+	lw $s3, 32($s0)
+	
+	# check that all three elements qre equal
+	and $t6, $s1, $s2
+	and $t7, $t6, $s3
+	
+	# if $t7 equals 11, call Xwin
+	beq $t7, 11, Xwin
+	
+	# if $t7 equals 11, call Owin
+	beq $t7, 12, Owin
+	
+	j winDiag2
+	
+	
+winDiag2: # check if player has won, in diagonal 2
+
+	# load address of array in $s0
+	la $s0, array
+	
+	# load elements in diagonal 2, into registers
+	lw $s1, 8($s0)
+	lw $s2, 16($s0)
+	lw $s3, 24($s0)
+	
+	# check that all three elements qre equal
+	and $t6, $s1, $s2
+	and $t7, $t6, $s3
+	
+	# if $t7 equals 11, call Xwin
+	beq $t7, 11, Xwin
+	
+	# if $t7 equals 11, call Owin
+	beq $t7, 12, Owin
+	
+	j prepareArray
+
+Xwin: # prints out Player1WinText
+	
+	printStr(Player1WinText)
+	
+	j exit
+
+Owin: # prints out Player2WinText
+	
+	printStr(Player2WinText)
+	
+	j exit
+	
 printBeg: # print at the beginning of line when printing table
 	printStr(newline)
 	printStr(endspacer)
@@ -274,7 +484,6 @@ printEnd: # print at the end of line when printing table
 	printStr(newline)
 	printStr(endspacer)
 	j printTable
-
 
 
 	
