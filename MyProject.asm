@@ -1,6 +1,5 @@
 
 
-
 .macro printStr(%string)
 	li $v0, 4
 	la $a0, %string
@@ -40,7 +39,7 @@ array: .word 1, 2, 3, 4, 5, 6, 7, 8, 9
 
 O: .asciiz "O"
 X: .asciiz "X"
-#allInputs: .word 0, 0, 0, 0, 0, 0, 0, 0, 0
+
 Oinputs: .word 0, 0, 0, 0, 0
 Xinputs: .word 0, 0, 0, 0, 0
 
@@ -95,8 +94,6 @@ printTable: # prints out the table
 	printStr(spacer)
 	
 	
-	
-	
 	j printTable
 	
 prepareArray: # restart counter and prepares array to be used in printTable
@@ -106,7 +103,7 @@ prepareArray: # restart counter and prepares array to be used in printTable
 	printStr(endspacer)
 	
 	# set loop counter to zero
-	move $t1, $zero
+	move $t1, $zero	
 	
 	j printTable
 	
@@ -182,9 +179,9 @@ OchangeArray: # change the value in the array to a 10, which symbolizes a 'O'
 	sw $t5, ($s0)
 	
 	# check if player has won
-	 j checkWin
+	j checkWin
 	
-	j prepareArray
+	#j prepareArray
 
 
 
@@ -223,12 +220,18 @@ XchangeArray: # change the value in the array to a 11, which symbolizes a 'X'
 	# check if player has won
 	j checkWin
 	
-	j prepareArray
+	#j prepareArray
 
 
 
 
 checkTurn: # check which players turn it is
+
+	# if $t7 equals 11, call Xwin
+	beq $t7, 11, Xwin
+	
+	# if $t7 equals 11, call Owin
+	beq $t7, 12, Owin
 	
 	# if $t2, equals 11, jump to askForMove1
 	beq $t2, 11, askForMove1
@@ -274,6 +277,7 @@ printX: # print out X
 	# print out space, " | "
 	printStr(spacer)
 	
+	
 	j printTable
 	
 checkWin: # check if player has won
@@ -295,10 +299,10 @@ winRow1:  # check if player has won, in row 1
 	and $t7, $t6, $s3
 	
 	# if $t7 equals 11, call Xwin
-	beq $t7, 11, Xwin
+	beq $t7, 11, prepareArray
 	
 	# if $t7 equals 11, call Owin
-	beq $t7, 12, Owin
+	beq $t7, 12, prepareArray
 	
 	j winRow2
 
@@ -317,10 +321,10 @@ winRow2:# check if player has won, in row 2
 	and $t7, $t6, $s3
 	
 	# if $t7 equals 11, call Xwin
-	beq $t7, 11, Xwin
+	beq $t7, 11, prepareArray
 	
 	# if $t7 equals 11, call Owin
-	beq $t7, 12, Owin
+	beq $t7, 12, prepareArray
 	
 	j winRow3
 	
@@ -339,10 +343,10 @@ winRow3:# check if player has won, in row 3
 	and $t7, $t6, $s3
 	
 	# if $t7 equals 11, call Xwin
-	beq $t7, 11, Xwin
+	beq $t7, 11, prepareArray
 	
 	# if $t7 equals 11, call Owin
-	beq $t7, 12, Owin
+	beq $t7, 12, prepareArray
 	
 	j winCol1
 	
@@ -361,10 +365,10 @@ winCol1: # check if player has won, in column 1
 	and $t7, $t6, $s3
 	
 	# if $t7 equals 11, call Xwin
-	beq $t7, 11, Xwin
+	beq $t7, 11, prepareArray
 	
 	# if $t7 equals 11, call Owin
-	beq $t7, 12, Owin
+	beq $t7, 12, prepareArray
 	
 	j winCol2
 	
@@ -384,10 +388,10 @@ winCol2:# check if player has won, in column 2
 	and $t7, $t6, $s3
 	
 	# if $t7 equals 11, call Xwin
-	beq $t7, 11, Xwin
+	beq $t7, 11, prepareArray
 	
 	# if $t7 equals 11, call Owin
-	beq $t7, 12, Owin
+	beq $t7, 12, prepareArray
 	
 	j winCol3
 	
@@ -407,10 +411,10 @@ winCol3:# check if player has won, in column 3
 	and $t7, $t6, $s3
 	
 	# if $t7 equals 11, call Xwin
-	beq $t7, 11, Xwin
+	beq $t7, 11, prepareArray
 	
 	# if $t7 equals 11, call Owin
-	beq $t7, 12, Owin
+	beq $t7, 12, prepareArray
 	
 	j winDiag1
 
@@ -431,10 +435,10 @@ winDiag1: # check if player has won, in diagonal 1
 	and $t7, $t6, $s3
 	
 	# if $t7 equals 11, call Xwin
-	beq $t7, 11, Xwin
+	beq $t7, 11, prepareArray
 	
 	# if $t7 equals 11, call Owin
-	beq $t7, 12, Owin
+	beq $t7, 12, prepareArray
 	
 	j winDiag2
 	
@@ -454,42 +458,51 @@ winDiag2: # check if player has won, in diagonal 2
 	and $t7, $t6, $s3
 	
 	# if $t7 equals 11, call Xwin
-	beq $t7, 11, Xwin
+	beq $t7, 11, prepareArray
 	
 	# if $t7 equals 11, call Owin
-	beq $t7, 12, Owin
+	beq $t7, 12, prepareArray
 	
 	j prepareArray
 
+	
+
 Xwin: # prints out Player1WinText
 	
+	printStr(newline)
 	printStr(Player1WinText)
 	
 	j exit
 
 Owin: # prints out Player2WinText
 	
+	printStr(newline)
 	printStr(Player2WinText)
 	
 	j exit
 	
+
 printBeg: # print at the beginning of line when printing table
+
 	printStr(newline)
 	printStr(endspacer)
+	
+	
 	j printTable
 	
 printEnd: # print at the end of line when printing table
+
 	printStr(endspacer)
 	printStr(line)
 	printStr(newline)
-	printStr(endspacer)
+	printStr(endspacer)	
+	
+	
 	j printTable
-
 
 	
 	
 exit: # exit program
 	li $v0, 10
 	syscall
-	
 	
