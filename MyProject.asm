@@ -40,9 +40,6 @@ array: .word 1, 2, 3, 4, 5, 6, 7, 8, 9
 O: .asciiz "O"
 X: .asciiz "X"
 
-Oinputs: .word 0, 0, 0, 0, 0
-Xinputs: .word 0, 0, 0, 0, 0
-
 player1Move: .asciiz "\nPlayer 1, please enter the slot you would like to take: "
 player2Move: .asciiz "\nPlayer 2, please enter the slot you would like to take: "
 
@@ -505,4 +502,3 @@ printEnd: # print at the end of line when printing table
 exit: # exit program
 	li $v0, 10
 	syscall
-	
