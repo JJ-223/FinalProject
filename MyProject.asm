@@ -137,6 +137,9 @@ askForMove1: # prompts user, stores user input, and indicates that its player2s 
 	li $v0, 5		
 	syscall
 	move $s4, $v0
+
+	blt $s4, 1, askForMove1
+	bgt $s4, 9, askForMove1
 	
     	# load 12 into $t2 and move it to $s6
     	# Indicates that Player1's turn is complete and that Player2 is next (see checkTurn )
@@ -158,6 +161,9 @@ askForMove2: # prompts user, stores user input, and indicates that its player1s 
 	li $v0, 5
 	syscall
 	move $s4, $v0
+
+	blt $s4, 1, askForMove2
+	bgt $s4, 9, askForMove2
     	
 	# load 11 into $t2 and move it to $s6
     	# Indicates that Player2's turn is complete and that Player1 is next (see checkTurn )
@@ -498,7 +504,7 @@ Xwin: # prints out Player1WinText
 	printStr(newline)
 	printStr(Player1WinText)
 	
-	j exit
+	j main
 
 
 Owin: # prints out Player2WinText
@@ -506,7 +512,7 @@ Owin: # prints out Player2WinText
 	printStr(newline)
 	printStr(Player2WinText)
 	
-	j exit
+	j main
 	
 	
 Tie: # print out tieText
@@ -514,7 +520,7 @@ Tie: # print out tieText
 	printStr(newline)
 	printStr(tieText)
 	
-	j exit
+	j main
 	
 
 printBeg: # print at the beginning of line when printing table
