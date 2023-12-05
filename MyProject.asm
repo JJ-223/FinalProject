@@ -18,6 +18,7 @@
 	
 	
 	
+	
 .end_macro
 
 
@@ -28,6 +29,8 @@ rules1: .asciiz "This is Tic-Tac-Toe! There will be a board of numbers in each o
 rules2: .asciiz "Each player will enter the integer of the slot they would like to choose.\n"
 rules3: .asciiz "Player 1 will be assigned 'X', and Player 2 will be assigned 'O'\n"
 rules4: .asciiz "Once the player picks a slot, that slot will be replaced with their respective 'X' or 'O'.\n"
+
+exampleTable: .asciiz "  1  |  2  |  3  \n-----------------\n  4  |  5  |  6  \n-----------------\n  7  |  8  |  9  "
 
 
 line: .asciiz "\n-----------------"
@@ -43,23 +46,25 @@ X: .asciiz "X"
 player1Move: .asciiz "\nPlayer 1, please enter the slot you would like to take: "
 player2Move: .asciiz "\nPlayer 2, please enter the slot you would like to take: "
 
-Player1WinText: "Player 1 has WON!!!"
-Player2WinText: "Player 2 has WON!!!"
+Player1WinText: .asciiz "Player 1 has WON!!!"
+Player2WinText: .asciiz "Player 2 has WON!!!"
+tieText: .asciiz "Game has ended in a TIE!"
 
 .text
 main:	
 	
-	#move $s3, $sp
-	#addi $sp, $sp, 76
-	#la $a0, 20($sp) # Oinput
-	#move $s5, 40($sp) # 
-	#move $s6, 76($sp)
 	
 	# print out rules
 	printStr(rules1)
 	printStr(rules2)
 	printStr(rules3)
 	printStr(rules4)
+	
+	# print exampleTable
+	printStr(exampleTable)
+	
+	# move counter set to zero
+	move $t8,$zero
 	
 	j askForMove1
 	
@@ -175,10 +180,12 @@ OchangeArray: # change the value in the array to a 10, which symbolizes a 'O'
 	li $t5, 12 #10
 	sw $t5, ($s0)
 	
+	# add 1 to move counter $t8
+	addi $t8, $t8, 1
+	
 	# check if player has won
 	j checkWin
 	
-	#j prepareArray
 
 
 
@@ -214,16 +221,21 @@ XchangeArray: # change the value in the array to a 11, which symbolizes a 'X'
 	li $t5, 11
 	sw $t5, ($s0)
 	
+	# add 1 to move counter $t8
+	addi $t8, $t8, 1
+	
 	# check if player has won
 	j checkWin
 	
-	#j prepareArray
 
 
 
 
 checkTurn: # check which players turn it is
 
+	# if $s4 equals 9, call Tie
+	beq $t8, 9, Tie
+	
 	# if $t7 equals 11, call Xwin
 	beq $t7, 11, Xwin
 	
@@ -471,10 +483,19 @@ Xwin: # prints out Player1WinText
 	
 	j exit
 
+
 Owin: # prints out Player2WinText
 	
 	printStr(newline)
 	printStr(Player2WinText)
+	
+	j exit
+	
+	
+Tie: # print out tieText
+	
+	printStr(newline)
+	printStr(tieText)
 	
 	j exit
 	
@@ -502,3 +523,5 @@ printEnd: # print at the end of line when printing table
 exit: # exit program
 	li $v0, 10
 	syscall
+	
+
