@@ -17,15 +17,14 @@
 	syscall 
 	
 	
-	
-	
 .end_macro
 
 
 
 .data
+main_menu: .asciiz "\n~~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~~\n(1) Play Tic-tac-toe \n(2) Exit\nEnter '1' or '2' for your selection: "
 
-rules1: .asciiz "This is Tic-Tac-Toe! There will be a board of numbers in each of the 9 slots.\n"
+rules1: .asciiz "\nThis is Tic-Tac-Toe! There will be a board of numbers in each of the 9 slots.\n"
 rules2: .asciiz "Each player will enter the integer of the slot they would like to choose.\n"
 rules3: .asciiz "Player 1 will be assigned 'X', and Player 2 will be assigned 'O'\n"
 rules4: .asciiz "Once the player picks a slot, that slot will be replaced with their respective 'X' or 'O'.\n"
@@ -46,13 +45,32 @@ X: .asciiz "X"
 player1Move: .asciiz "\nPlayer 1, please enter the slot you would like to take: "
 player2Move: .asciiz "\nPlayer 2, please enter the slot you would like to take: "
 
-Player1WinText: .asciiz "Player 1 has WON!!!"
-Player2WinText: .asciiz "Player 2 has WON!!!"
+Player1WinText: .asciiz "Player 1 has WON!!!\n"
+Player2WinText: .asciiz "Player 2 has WON!!!\n"
 tieText: .asciiz "Game has ended in a TIE!"
+
+exitText: .asciiz "\nExiting the program."
 
 .text
 main:	
+
+	# print main_menu
+	printStr(main_menu)
 	
+	# get user input
+	li $v0, 5
+	syscall
+	move $t0, $v0
+	
+	# if input equals 1, call printRules
+	beq $t0, 1, printRules
+	
+	# if input equals 2, exit
+	beq $t0, 2, exit
+	
+	j main
+	
+printRules:
 	
 	# print out rules
 	printStr(rules1)
@@ -67,8 +85,7 @@ main:
 	move $t8,$zero
 	
 	j askForMove1
-	
-	
+
 
 printTable: # prints out the table 
 	
@@ -519,8 +536,12 @@ printEnd: # print at the end of line when printing table
 	j printTable
 
 	
-	
+
 exit: # exit program
+	
+	printStr(exitText)
+	
+	# exit
 	li $v0, 10
 	syscall
 	
