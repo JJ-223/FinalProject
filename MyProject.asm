@@ -504,7 +504,8 @@ Xwin: # prints out Player1WinText
 	printStr(newline)
 	printStr(Player1WinText)
 	
-	j main
+	
+	j prepareReset
 
 
 Owin: # prints out Player2WinText
@@ -512,15 +513,42 @@ Owin: # prints out Player2WinText
 	printStr(newline)
 	printStr(Player2WinText)
 	
-	j main
+	
+	j prepareReset
 	
 	
 Tie: # print out tieText
 	
 	printStr(newline)
 	printStr(tieText)
+
 	
-	j main
+	j prepareReset
+	
+prepareReset:
+	# load address of array in $s0
+	la $s0, array
+	
+	# set loop counter to zero
+	move $t6, $zero
+	
+	j reset
+	
+reset: 
+
+	# increment loop counter
+	addi $t6,$t6, 1
+	
+	# save number in to array
+	sw  $t6, ($s0)
+	
+	# increment $s0 by 4
+	addi $s0, $s0, 4
+	
+	# if equals 9, jump to main
+	beq $t6, 9, main
+	
+	j reset
 	
 
 printBeg: # print at the beginning of line when printing table
