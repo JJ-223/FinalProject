@@ -1,4 +1,6 @@
 # CS 2640.01
+# Group: DRJT
+# Authors: Diego Orendain, Roberto Tabares, Jessalin Jiangkhov, Tom Nguyen
 
 # Objectives:
 # 1) Create a Main Menu
