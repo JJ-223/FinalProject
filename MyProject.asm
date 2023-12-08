@@ -1,4 +1,9 @@
+# CS 2640.01
 
+# Objectives:
+# 1) Create a Main Menu
+# 2) Create a playable Tic-Tac-Toe game
+# 3) Create an option to play again
 
 .macro printStr(%string)
 	li $v0, 4
