@@ -145,6 +145,7 @@ askForMove1: # prompts user, stores user input, and indicates that its player2s 
 	syscall
 	move $s4, $v0
 
+	#conditionals for invalid input
 	blt $s4, 1, askForMove1
 	bgt $s4, 9, askForMove1
 	
@@ -169,6 +170,7 @@ askForMove2: # prompts user, stores user input, and indicates that its player1s 
 	syscall
 	move $s4, $v0
 
+	#conditionals for invalid input
 	blt $s4, 1, askForMove2
 	bgt $s4, 9, askForMove2
     	
@@ -188,8 +190,6 @@ OchangeArray: # change the value in the array to a 10, which symbolizes a 'O'
 	#load current element into $t0
 	lw $t0, ($s0)
 	
-	#la $a2,($s0)
-	
 	subi $s4, $s4, 1
 	
 	# multiply $s4(user input) by 4 (bytes) to get the location of the wanted element in array and store in $s5
@@ -200,12 +200,12 @@ OchangeArray: # change the value in the array to a 10, which symbolizes a 'O'
 	# load the current element into $t3
 	lw $t3, ($s0)
 	
-	# check if $t3, equals 10 and 11 jump to 'askForMove2'
-	# the 10 and 11 means that there already is a O or X in that space
+	# check if $t3, equals 11 and 12 jump to 'askForMove2'
+	# the 11 and 12 means that there already is a O or X in that space
 	beq $t3, 11, askForMove2
 	beq $t3, 12, askForMove2
 	
-	# load 10,(O), into $t5
+	# load 12,(O), into $t5
 	# then store in array
 	li $t5, 12 #10
 	sw $t5, ($s0)
@@ -227,8 +227,6 @@ XchangeArray: # change the value in the array to a 11, which symbolizes a 'X'
 	#load current element into $t0
 	lw $t0, ($s0)
 	
-	#la $a2,($s0)
-	
 	subi $s4, $s4, 1
 	
 	# multiply $s4(user input) by 4 (bytes) to get the location of the wanted element in array and store in $s5
@@ -240,8 +238,8 @@ XchangeArray: # change the value in the array to a 11, which symbolizes a 'X'
 	# load the current element into $t3
 	lw $t3, ($s0)
 	
-	# check if $t3, equals 10 and 11 jump to 'askForMove2'
-	# the 10 and 11 means that there already is a O or X in that space
+	# check if $t3, equals 11 and 12 jump to 'askForMove2'
+	# the 11 and 12 means that there already is a O or X in that space
 	beq $t3, 11, askForMove1
 	beq $t3, 12, askForMove1
 	
@@ -263,13 +261,13 @@ XchangeArray: # change the value in the array to a 11, which symbolizes a 'X'
 
 checkTurn: # check which players turn it is
 
-	# if $s4 equals 9, call Tie
+	# if $t8 equals 9, call Tie
 	beq $t8, 9, Tie
 	
 	# if $t7 equals 11, call Xwin
 	beq $t7, 11, Xwin
 	
-	# if $t7 equals 11, call Owin
+	# if $t7 equals 12, call Owin
 	beq $t7, 12, Owin
 	
 	# if $t2, equals 11, jump to askForMove1
@@ -277,7 +275,7 @@ checkTurn: # check which players turn it is
 	# if $t2, equals 12, jump to askForMove2
 	beq $t2, 12, askForMove2
 
-print0: # print out O
+printO: # print out O
 	
 	# print out O
 	li $v0, 4
@@ -340,7 +338,7 @@ winRow1:  # check if player has won, in row 1
 	# if $t7 equals 11, call Xwin
 	beq $t7, 11, prepareArray
 	
-	# if $t7 equals 11, call Owin
+	# if $t7 equals 12, call Owin
 	beq $t7, 12, prepareArray
 	
 	j winRow2
@@ -362,7 +360,7 @@ winRow2:# check if player has won, in row 2
 	# if $t7 equals 11, call Xwin
 	beq $t7, 11, prepareArray
 	
-	# if $t7 equals 11, call Owin
+	# if $t7 equals 12, call Owin
 	beq $t7, 12, prepareArray
 	
 	j winRow3
@@ -384,7 +382,7 @@ winRow3:# check if player has won, in row 3
 	# if $t7 equals 11, call Xwin
 	beq $t7, 11, prepareArray
 	
-	# if $t7 equals 11, call Owin
+	# if $t7 equals 12, call Owin
 	beq $t7, 12, prepareArray
 	
 	j winCol1
@@ -406,7 +404,7 @@ winCol1: # check if player has won, in column 1
 	# if $t7 equals 11, call Xwin
 	beq $t7, 11, prepareArray
 	
-	# if $t7 equals 11, call Owin
+	# if $t7 equals 12, call Owin
 	beq $t7, 12, prepareArray
 	
 	j winCol2
@@ -429,7 +427,7 @@ winCol2:# check if player has won, in column 2
 	# if $t7 equals 11, call Xwin
 	beq $t7, 11, prepareArray
 	
-	# if $t7 equals 11, call Owin
+	# if $t7 equals 12, call Owin
 	beq $t7, 12, prepareArray
 	
 	j winCol3
@@ -452,7 +450,7 @@ winCol3:# check if player has won, in column 3
 	# if $t7 equals 11, call Xwin
 	beq $t7, 11, prepareArray
 	
-	# if $t7 equals 11, call Owin
+	# if $t7 equals 12, call Owin
 	beq $t7, 12, prepareArray
 	
 	j winDiag1
@@ -476,7 +474,7 @@ winDiag1: # check if player has won, in diagonal 1
 	# if $t7 equals 11, call Xwin
 	beq $t7, 11, prepareArray
 	
-	# if $t7 equals 11, call Owin
+	# if $t7 equals 12, call Owin
 	beq $t7, 12, prepareArray
 	
 	j winDiag2
@@ -499,7 +497,7 @@ winDiag2: # check if player has won, in diagonal 2
 	# if $t7 equals 11, call Xwin
 	beq $t7, 11, prepareArray
 	
-	# if $t7 equals 11, call Owin
+	# if $t7 equals 12, call Owin
 	beq $t7, 12, prepareArray
 	
 	j prepareArray
@@ -556,15 +554,6 @@ reset:
 	beq $t6, 9, main
 	
 	j reset
-	
-
-printBeg: # print at the beginning of line when printing table
-
-	printStr(newline)
-	printStr(endspacer)
-	
-	
-	j printTable
 	
 printEnd: # print at the end of line when printing table
 
