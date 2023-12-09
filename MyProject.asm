@@ -15,7 +15,7 @@
 
 .macro printInts
 	# if element in array is equal to 10 or 11, it jumos to print0 or printX respectively
-	beq $t0, 12, print0
+	beq $t0, 12, printO
 	beq $t0, 11, printX
 	
 	# print out array element
