@@ -182,7 +182,7 @@ askForMove2: # prompts user, stores user input, and indicates that its player1s 
 	jal OchangeArray
 	
 
-OchangeArray: # change the value in the array to a 10, which symbolizes a 'O'
+OchangeArray: # change the value in the array to a 12, which symbolizes a 'O'
 
 	# load address of array in $s0
 	la $s0, array
@@ -207,7 +207,7 @@ OchangeArray: # change the value in the array to a 10, which symbolizes a 'O'
 	
 	# load 12,(O), into $t5
 	# then store in array
-	li $t5, 12 #10
+	li $t5, 12
 	sw $t5, ($s0)
 	
 	# add 1 to move counter $t8
