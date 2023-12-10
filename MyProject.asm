@@ -261,14 +261,15 @@ XchangeArray: # change the value in the array to a 11, which symbolizes a 'X'
 
 checkTurn: # check which players turn it is
 
-	# if $t8 equals 9, call Tie
-	beq $t8, 9, Tie
 	
 	# if $t7 equals 11, call Xwin
 	beq $t7, 11, Xwin
 	
 	# if $t7 equals 12, call Owin
 	beq $t7, 12, Owin
+	
+	# if $t8 equals 9, call Tie
+	beq $t8, 9, Tie
 	
 	# if $t2, equals 11, jump to askForMove1
 	beq $t2, 11, askForMove1
@@ -575,4 +576,3 @@ exit: # exit program
 	li $v0, 10
 	syscall
 	
-
