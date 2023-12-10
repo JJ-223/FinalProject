@@ -335,10 +335,10 @@ winRow1:  # check if player has won, in row 1
 	and $t6, $s1, $s2
 	and $t7, $t6, $s3
 	
-	# if $t7 equals 11, call Xwin
+	# if $t7 equals 11, call prepareArray
 	beq $t7, 11, prepareArray
 	
-	# if $t7 equals 12, call Owin
+	# if $t7 equals 12, call prepareArray
 	beq $t7, 12, prepareArray
 	
 	j winRow2
@@ -357,10 +357,10 @@ winRow2:# check if player has won, in row 2
 	and $t6, $s1, $s2
 	and $t7, $t6, $s3
 	
-	# if $t7 equals 11, call Xwin
+	# if $t7 equals 11, call prepareArray
 	beq $t7, 11, prepareArray
 	
-	# if $t7 equals 12, call Owin
+	# if $t7 equals 12, call prepareArray
 	beq $t7, 12, prepareArray
 	
 	j winRow3
@@ -379,10 +379,10 @@ winRow3:# check if player has won, in row 3
 	and $t6, $s1, $s2
 	and $t7, $t6, $s3
 	
-	# if $t7 equals 11, call Xwin
+	# if $t7 equals 11, call prepareArray
 	beq $t7, 11, prepareArray
 	
-	# if $t7 equals 12, call Owin
+	# if $t7 equals 12, call prepareArray
 	beq $t7, 12, prepareArray
 	
 	j winCol1
@@ -401,10 +401,10 @@ winCol1: # check if player has won, in column 1
 	and $t6, $s1, $s2
 	and $t7, $t6, $s3
 	
-	# if $t7 equals 11, call Xwin
+	# if $t7 equals 11, call prepareArray
 	beq $t7, 11, prepareArray
 	
-	# if $t7 equals 12, call Owin
+	# if $t7 equals 12, call prepareArray
 	beq $t7, 12, prepareArray
 	
 	j winCol2
@@ -424,10 +424,10 @@ winCol2:# check if player has won, in column 2
 	and $t6, $s1, $s2
 	and $t7, $t6, $s3
 	
-	# if $t7 equals 11, call Xwin
+	# if $t7 equals 11, call prepareArray
 	beq $t7, 11, prepareArray
 	
-	# if $t7 equals 12, call Owin
+	# if $t7 equals 12, call prepareArray
 	beq $t7, 12, prepareArray
 	
 	j winCol3
@@ -447,10 +447,10 @@ winCol3:# check if player has won, in column 3
 	and $t6, $s1, $s2
 	and $t7, $t6, $s3
 	
-	# if $t7 equals 11, call Xwin
+	# if $t7 equals 11, call prepareArray
 	beq $t7, 11, prepareArray
 	
-	# if $t7 equals 12, call Owin
+	# if $t7 equals 12, call prepareArray
 	beq $t7, 12, prepareArray
 	
 	j winDiag1
@@ -471,10 +471,10 @@ winDiag1: # check if player has won, in diagonal 1
 	and $t6, $s1, $s2
 	and $t7, $t6, $s3
 	
-	# if $t7 equals 11, call Xwin
+	# if $t7 equals 11, call prepareArray
 	beq $t7, 11, prepareArray
 	
-	# if $t7 equals 12, call Owin
+	# if $t7 equals 12, call prepareArray
 	beq $t7, 12, prepareArray
 	
 	j winDiag2
@@ -494,10 +494,10 @@ winDiag2: # check if player has won, in diagonal 2
 	and $t6, $s1, $s2
 	and $t7, $t6, $s3
 	
-	# if $t7 equals 11, call Xwin
+	# if $t7 equals 11, call prepareArray
 	beq $t7, 11, prepareArray
 	
-	# if $t7 equals 12, call Owin
+	# if $t7 equals 12, call prepareArray
 	beq $t7, 12, prepareArray
 	
 	j prepareArray
