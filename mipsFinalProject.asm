@@ -1,5 +1,6 @@
 # CS 2640, November 23, 2023
 # test 
+##Group DRJT - Diego Orendain, Robert Tabares, Jessalin Jiangkhov, Tom Nguyen
 
 # TTT = setup, rules = player gives program int, changes int into O or X, continually updates until winner (O or X three in a row)
 # different winner combos = 147, 258, 369, 123, 456, 789, 159, 357 (either in order or reverse also works)?

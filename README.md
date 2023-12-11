@@ -1,4 +1,5 @@
 # FinalProject
+#Group DRJT - Diego Orendain, Robert Tabares, Jessalin Jiangkhov, Tom Nguyen
 - Rough Plan for program
 
 - Game play
